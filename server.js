@@ -15,6 +15,17 @@ app.get('/weapons', async(req, res) => {
   res.json(data.rows);
 });
 
+app.get('/weapons/:id', async(req, res) => {
+  const data = await client.query(`
+  SELECT * from weapons
+  WHERE id=${req.params.id};
+  `);
+
+
+
+  res.json(data.rows);
+});
+
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Started on ${PORT}`);
