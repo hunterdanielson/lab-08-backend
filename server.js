@@ -25,8 +25,11 @@ app.get('/weapons', async(req, res) => {
 app.get('/weapons/:id', async(req, res) => {
   const id = req.params.id;
   const data = await client.query(`
-  SELECT * from weapons
-  WHERE id=$1;
+  SELECT weapons.id, weapons.name, weapons.attack, weapons.affinity, elements.element, weapons.is_longsword
+  from weapons
+  join elements
+  on weapons.element_id = elements.id
+  where weapons.id = $1
   `, [id]);
 
   res.json(data.rows);
