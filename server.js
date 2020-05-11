@@ -25,11 +25,12 @@ app.get('/weapons/:id', async(req, res) => {
   res.json(data.rows);
 });
 
+
 app.post('/weapons/', async(req, res) => {
   console.log(req.body, res.body);
   try {
     const data = await client.query(
-      `insert into weapons (name, attack, affinity, element, is_longsword, user_id)
+      `insert into weapons (name, attack, affinity, element, is_longsword, owner_id)
       values ($1, $2, $3, $4, $5, $6)
       returning *;`,
       [req.body.name, req.body.attack, req.body.affinity, req.body.element, req.body.is_longsword, 1]
