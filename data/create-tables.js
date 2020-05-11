@@ -15,13 +15,17 @@ async function run() {
                     id SERIAL PRIMARY KEY,
                     email VARCHAR(256) NOT NULL,
                     hash VARCHAR(512) NOT NULL
+                );
+                CREATE TABLE elements (
+                    id SERIAL PRIMARY KEY,
+                    element VARCHAR(256) NOT NULL
                 );           
                 CREATE TABLE weapons (
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
                     attack INTEGER NOT NULL,
                     affinity INTEGER NOT NULL,
-                    element VARCHAR(512) NOT NULL,
+                    element_id INTEGER NOT NULL,
                     is_longsword BOOLEAN,
                     owner_id INTEGER NOT NULL REFERENCES users(id)
             );

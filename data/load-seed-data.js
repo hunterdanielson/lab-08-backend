@@ -2,6 +2,7 @@ const client = require('../lib/client');
 // import our seed data:
 const weapons = require('./weapons.js');
 const usersData = require('./users.js');
+const elementsData = require('./elements.js');
 
 run();
 
@@ -9,6 +10,17 @@ async function run() {
 
   try {
     await client.connect();
+
+    await Promise.all(
+      elementsData.map(element => {
+        return client.query(`
+                      INSERT INTO elements (element)
+                      VALUES ($1)
+                      RETURNING *;
+                  `,
+        [element.element]);
+      })
+    );
 
     const users = await Promise.all(
       usersData.map(user => {
@@ -26,10 +38,10 @@ async function run() {
     await Promise.all(
       weapons.map(weapon => {
         return client.query(`
-                    INSERT INTO weapons (name, attack, affinity, element, is_longsword, owner_id)
+                    INSERT INTO weapons (name, attack, affinity, element_id, is_longsword, owner_id)
                     VALUES ($1, $2, $3, $4, $5, $6);
                 `,
-        [weapon.name, weapon.attack, weapon.affinity, weapon.element, weapon.is_longsword, user.id]);
+        [weapon.name, weapon.attack, weapon.affinity, weapon.element_id, weapon.is_longsword, user.id]);
       })
     );
     
