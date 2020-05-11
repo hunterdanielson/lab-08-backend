@@ -16,10 +16,11 @@ app.get('/weapons', async(req, res) => {
 });
 
 app.get('/weapons/:id', async(req, res) => {
+  const id = req.params.id;
   const data = await client.query(`
   SELECT * from weapons
-  WHERE id=${req.params.id};
-  `);
+  WHERE id=$1;
+  `, [id]);
 
   res.json(data.rows);
 });
